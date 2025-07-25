@@ -52,7 +52,7 @@ def main():
         data=f.readlines()
         data=[i.strip('\n').split('.')[0].lower() for i in data]
 
-    num=10 #number of images for each prompt
+    num=1 #number of images for each prompt
     dataset_num=len(data)
     total_score=np.zeros(num*dataset_num)
     spatial_score=np.array(spatial_score)
@@ -62,6 +62,13 @@ def main():
 
     for i in range(dataset_num):
         if data[i] in spatial:#contain spatial relation and attribute
+            print(data[i])
+            # print(i)##i=1
+            if i==1:
+                print(spatial_score)
+                print(attribute_score)
+                print(spatial_score[i*num:(i+1)*num].shape)
+                print(attribute_score[i*num:(i+1)*num].shape)
             total_score[i*num:(i+1)*num]=(spatial_score[i*num:(i+1)*num]+attribute_score[i*num:(i+1)*num])*0.5
         elif data[i] in action:#contain action relation and attribute
             total_score[i*num:(i+1)*num]=(action_score[i*num:(i+1)*num]+attribute_score[i*num:(i+1)*num])*0.5

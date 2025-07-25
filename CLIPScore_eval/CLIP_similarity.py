@@ -48,7 +48,8 @@ def main():
     file_names.sort(key=lambda x: int(x.split("_")[-1].split('.')[0]))  # sort
 
     cnt = 0
-    total = []
+    # MODIFIED: Changed variable name to be more descriptive
+    final_results = []
 
     # output annotation.json
     for file_name in file_names:
@@ -83,20 +84,19 @@ def main():
         cnt+=1
         if (cnt % 100 == 0):
             print(f"CLIP image-text:{cnt} prompt(s) have been processed!")
-        total.append(similarity)
+        
+        # MODIFIED: Store the image path and score together
+        result_dict = {
+            'image_path': image_path,
+            'answer': similarity
+        }
+        final_results.append(result_dict)
 
 
+    # --- MODIFIED BLOCK: Simplified saving and score calculation ---
     #save
-    sim_dict=[]
-    for i in range(len(total)):
-        tmp={}
-        tmp['question_id']=i
-        tmp["answer"] = total[i]
-        sim_dict.append(tmp)
-
-
-    json_file = json.dumps(sim_dict)
-    savepath = os.path.join(outpath,"annotation_clip") #todo
+    json_file = json.dumps(final_results, indent=4)
+    savepath = os.path.join(outpath,"annotation_clip")
     os.makedirs(savepath, exist_ok=True)
     with open(f'{savepath}/vqa_result.json', 'w') as f:
         f.write(json_file)
@@ -104,17 +104,15 @@ def main():
     
     # score avg
     score=0
-    for i in range(len(sim_dict)):
-        score+=float(sim_dict[i]['answer'])
+    for item in final_results:
+        score+=float(item['answer'])
+    
+    avg_score = score / len(final_results) if final_results else 0
+    
     with open(f'{savepath}/score_avg.txt', 'w') as f:
-        f.write('score avg:'+str(score/len(sim_dict)))
-    print("score avg:", score/len(sim_dict))
+        f.write('score avg:'+str(avg_score))
+    print("score avg:", avg_score)
+    # --- END OF MODIFIED BLOCK ---
 
 if __name__ == "__main__":
     main()
-
-
-
-
-
-

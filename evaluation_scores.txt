@@ -1,0 +1,5 @@
+Evaluation run at: Fri Jul 25 01:43:38 PM PDT 2025
+-------------------------------------
+BLIP-VQA Score: 0.36193478995580564
+CLIPScore: 0.2973531087239583
+3-in-1 Score: 

@@ -1,0 +1,12 @@
+
+/examples
+/examples
+/examples_1
+/examples_default
+*.pyc
+*.pth
+/examples
+/examples/dataset
+/examples
+/examples_0.1
+/UniDet_eval/experts/expert_weights
